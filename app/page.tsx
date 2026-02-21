@@ -46,6 +46,22 @@ const Contador = () => {
   );
 };
 
+useEffect(() => {
+  const manejarVisibilidad = () => {
+    if (document.hidden) {
+      audioRef.current?.pause();
+    } else {
+      // Solo reanuda si la invitación ya fue "abierta"
+      if (comenzar) {
+        audioRef.current?.play().catch(() => {});
+      }
+    }
+  };
+
+  document.addEventListener("visibilitychange", manejarVisibilidad);
+  return () => document.removeEventListener("visibilitychange", manejarVisibilidad);
+}, [comenzar]);
+
 export default function InvitacionBoda() {
   const [comenzar, setComenzar] = useState(false);
   const [cancion, setCancion] = useState("");
