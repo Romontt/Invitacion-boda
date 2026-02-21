@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { MapPin, Clock, Heart, ChevronDown, Mail, Music, Shirt, Volume2, VolumeX, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MapPin, Clock, Heart, ChevronDown, Mail, Shirt, Volume2, VolumeX, Sparkles } from 'lucide-react';
 
 // --- COMPONENTE DEL CONTADOR ESTILIZADO ---
 const Contador = () => {
@@ -25,17 +25,13 @@ const Contador = () => {
   }, []);
 
   return (
-    <div className="flex gap-8 md:gap-12 justify-center items-center py-12">
+    <div className="flex gap-6 md:gap-10 justify-center items-center py-10">
       {Object.entries(tiempo).map(([label, valor]) => (
-        <div key={label} className="group relative">
-          <motion.span 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            className="block text-4xl md:text-6xl font-serif text-[#0B2F2A] transition-transform group-hover:-translate-y-1"
-          >
+        <div key={label} className="text-center">
+          <span className="block text-3xl md:text-5xl font-serif text-[#0B2F2A]">
             {valor.toString().padStart(2, '0')}
-          </motion.span>
-          <span className="text-[9px] uppercase tracking-[0.3em] text-[#C2A378] font-semibold">
+          </span>
+          <span className="text-[8px] uppercase tracking-[0.2em] text-[#C2A378] font-bold">
             {label}
           </span>
         </div>
@@ -63,7 +59,7 @@ export default function InvitacionBoda() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FDFCF9] text-[#2D2D2D] selection:bg-[#C2A378] selection:text-white">
+    <main className="min-h-screen bg-[#FDFCF9] text-[#2D2D2D] selection:bg-[#C2A378] selection:text-white overflow-hidden">
       <audio ref={audioRef} src="/music.mp3" loop />
 
       {/* OVERLAY TEXTURA PAPEL */}
@@ -72,25 +68,21 @@ export default function InvitacionBoda() {
       <AnimatePresence>
         {!comenzar && (
           <motion.div 
-            exit={{ opacity: 0, scale: 1.1 }}
+            exit={{ opacity: 0, scale: 1.05 }}
             transition={{ duration: 1.2, ease: [0.43, 0.13, 0.23, 0.96] }}
             className="fixed inset-0 z-[1000] bg-[#0B2F2A] flex items-center justify-center p-6"
           >
             <div className="max-w-md w-full text-center space-y-12">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                className="space-y-4"
-              >
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
                 <span className="text-[#C2A378] tracking-[0.5em] text-[10px] uppercase block">Nuestra Boda</span>
                 <h2 className="font-serif text-5xl text-white italic">C <span className="text-[#C2A378]">&</span> J</h2>
               </motion.div>
-              
               <div className="flex flex-col gap-5">
-                <button onClick={() => abrirInvitacion(true)} className="group flex items-center justify-center gap-4 px-10 py-5 bg-[#C2A378] text-[#0B2F2A] text-[11px] tracking-[0.4em] uppercase font-bold rounded-full hover:bg-white transition-all shadow-2xl">
-                  <Volume2 size={16} className="group-hover:animate-pulse" /> Abrir con Música
+                <button onClick={() => abrirInvitacion(true)} className="flex items-center justify-center gap-4 px-10 py-5 bg-[#C2A378] text-[#0B2F2A] text-[11px] tracking-[0.4em] uppercase font-bold rounded-full hover:bg-white transition-all shadow-2xl">
+                  <Volume2 size={16} /> Abrir con Música
                 </button>
                 <button onClick={() => abrirInvitacion(false)} className="px-10 py-5 text-white/50 text-[10px] tracking-[0.4em] uppercase hover:text-white transition-colors">
-                  <VolumeX size={14} className="inline mr-2" /> Sin Sonido
+                  Sin Sonido
                 </button>
               </div>
             </div>
@@ -101,117 +93,103 @@ export default function InvitacionBoda() {
       {comenzar && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.5 }}>
           
-          {/* HERO SECTION */}
-          <section className="h-screen relative flex flex-col items-center justify-center text-center px-6">
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }} 
-              animate={{ scale: 1, opacity: 1 }} 
-              transition={{ duration: 2 }}
-              className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none"
-            >
-              <h1 className="text-[30vw] font-serif leading-none uppercase">Wedding</h1>
-            </motion.div>
-
-            <div className="space-y-8 z-10">
-              <motion.div initial={{ letterSpacing: "0.2em", opacity: 0 }} animate={{ letterSpacing: "0.6em", opacity: 1 }} transition={{ duration: 1.5 }}>
-                <span className="text-[#C2A378] text-[12px] uppercase font-semibold">Guápiles, Costa Rica</span>
+          {/* --- NUEVO HERO SECCIÓN --- */}
+          <section className="min-h-screen relative flex items-center justify-center p-4 md:p-12 lg:p-24">
+            <div className="grid md:grid-cols-2 gap-0 items-center max-w-7xl w-full bg-white shadow-[0_30px_100px_-20px_rgba(0,0,0,0.1)] rounded-2xl overflow-hidden relative">
+              
+              {/* Lado de la Imagen */}
+              <motion.div 
+                initial={{ x: -50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.2, delay: 0.2 }}
+                className="relative h-[50vh] md:h-[80vh] overflow-hidden"
+              >
+                <img src="/foto2.jpg" alt="Carlos y Joseline" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-[#0B2F2A]/10 mix-blend-multiply" />
               </motion.div>
 
-              <h1 className="text-7xl md:text-9xl font-serif text-[#0B2F2A] leading-[0.8]">
-                Carlos <br />
-                <span className="text-3xl md:text-5xl italic font-light text-[#4E0302] block my-6">and</span>
-                Joseline
-              </h1>
+              {/* Lado del Contenido */}
+              <motion.div 
+                initial={{ x: 50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.2, delay: 0.4 }}
+                className="relative p-8 md:p-20 flex flex-col justify-center items-center text-center bg-[#FDFCF9]"
+              >
+                {/* Elemento Decorativo de Fondo (Ocapo) */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none overflow-hidden">
+                   <h2 className="text-[20rem] font-serif italic rotate-12">Save</h2>
+                </div>
 
-              <div className="flex items-center justify-center gap-6 py-8">
-                 <div className="h-[0.5px] w-16 bg-[#C2A378]" />
-                 <p className="text-xl md:text-2xl font-serif italic text-[#4E0302]">19 de Diciembre, 2026</p>
-                 <div className="h-[0.5px] w-16 bg-[#C2A378]" />
-              </div>
+                <div className="relative z-10 space-y-6">
+                  <Sparkles className="mx-auto text-[#C2A378] mb-4" size={20} strokeWidth={1} />
+                  <span className="text-[#C2A378] tracking-[0.6em] text-[10px] uppercase font-bold block">Save the Date</span>
+                  
+                  <h1 className="text-6xl md:text-8xl font-serif text-[#0B2F2A] leading-tight">
+                    Carlos <br />
+                    <span className="text-3xl italic text-[#4E0302] my-2 block">&</span>
+                    Joseline
+                  </h1>
+
+                  <div className="py-6 flex flex-col items-center gap-2">
+                    <div className="h-px w-12 bg-[#C2A378]/40" />
+                    <p className="text-lg md:text-xl font-serif italic text-gray-500">19 de Diciembre, 2026</p>
+                    <div className="h-px w-12 bg-[#C2A378]/40" />
+                  </div>
+
+                  <p className="text-[10px] tracking-[0.3em] uppercase text-gray-400">Guápiles • Costa Rica</p>
+                </div>
+              </motion.div>
             </div>
 
+            {/* Scroll Indicator */}
             <motion.div 
               animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 3 }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[#C2A378]"
+              className="absolute bottom-8 text-[#C2A378]"
             >
               <ChevronDown size={24} strokeWidth={1} />
             </motion.div>
           </section>
 
-          {/* CUENTA REGRESIVA ELEGANTE */}
-          <section className="py-20 bg-white border-y border-[#F7F3ED]">
-            <div className="max-w-4xl mx-auto text-center">
+          {/* CUENTA REGRESIVA */}
+          <section className="py-20 bg-white">
+            <div className="max-w-4xl mx-auto text-center px-6">
+              <span className="text-[10px] tracking-[0.4em] uppercase text-gray-400 mb-4 block">Faltan solo</span>
               <Contador />
             </div>
           </section>
 
-          {/* FRASE INSPIRACIONAL */}
-          <section className="py-40 px-8 text-center bg-[#0B2F2A] relative overflow-hidden">
-             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="relative z-10 max-w-3xl mx-auto">
-                <Sparkles className="mx-auto text-[#C2A378] mb-8" size={32} strokeWidth={1} />
-                <p className="text-3xl md:text-5xl font-serif leading-tight italic text-white/90">
-                  "El amor no consiste en mirarse el uno al otro, sino en mirar juntos en la misma dirección."
-                </p>
-             </motion.div>
-          </section>
-
-          {/* DETALLES: RECEPCIÓN Y UBICACIÓN */}
-          <section className="max-w-7xl mx-auto px-8 py-40 grid md:grid-cols-2 gap-20">
-             <motion.div whileInView={{ y: 0, opacity: 1 }} initial={{ y: 40, opacity: 0 }} className="space-y-8 border-l border-[#C2A378]/20 pl-12">
-                <Clock className="text-[#4E0302]" size={32} strokeWidth={1} />
-                <h3 className="font-serif text-5xl text-[#0B2F2A]">La Recepción</h3>
-                <p className="text-gray-500 text-lg font-serif italic">Seis de la tarde</p>
-                <div className="h-px w-20 bg-[#C2A378]" />
-                <button onClick={() => window.open('...calendario...')} className="text-[10px] tracking-[0.4em] uppercase font-bold text-[#C2A378] hover:text-[#0B2F2A] transition-colors">
-                  + Save the Date
-                </button>
-             </motion.div>
-
-             <motion.div whileInView={{ y: 0, opacity: 1 }} initial={{ y: 40, opacity: 0 }} className="space-y-8 border-l border-[#C2A378]/20 pl-12">
-                <MapPin className="text-[#4E0302]" size={32} strokeWidth={1} />
-                <h3 className="font-serif text-5xl text-[#0B2F2A]">Ubicación</h3>
-                <p className="text-gray-500 text-lg font-serif italic">Pococí, Guápiles. Recinto Privado.</p>
-                <div className="h-px w-20 bg-[#C2A378]" />
-                <a href="#" className="inline-block border border-[#0B2F2A] text-[#0B2F2A] px-12 py-4 rounded-full text-[10px] tracking-[0.3em] uppercase hover:bg-[#0B2F2A] hover:text-white transition-all">
-                  Ver Mapa GPS
+          {/* DETALLES Y RSVP (Se mantienen con el estilo elegante) */}
+          <section className="max-w-6xl mx-auto px-8 py-32 grid md:grid-cols-2 gap-16">
+             <div className="space-y-6 border-l border-[#C2A378]/20 pl-8">
+                <Clock className="text-[#4E0302]" size={28} strokeWidth={1} />
+                <h3 className="font-serif text-4xl text-[#0B2F2A]">La Recepción</h3>
+                <p className="text-gray-500 italic">06:00 PM | Pococí, Guápiles</p>
+             </div>
+             <div className="space-y-6 border-l border-[#C2A378]/20 pl-8">
+                <MapPin className="text-[#4E0302]" size={28} strokeWidth={1} />
+                <h3 className="font-serif text-4xl text-[#0B2F2A]">Ubicación</h3>
+                <a href="#" className="text-[10px] tracking-[0.3em] uppercase font-bold text-[#C2A378] underline decoration-[#C2A378]/30 underline-offset-8">
+                  Abrir Mapa Google
                 </a>
-             </motion.div>
+             </div>
           </section>
 
-          {/* CÓDIGO DE VESTIMENTA Y REGALOS */}
-          <section className="bg-[#F7F3ED] py-40 px-8">
-            <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-start">
-              <div className="text-center space-y-6">
-                <Shirt className="mx-auto text-[#4E0302]" size={36} strokeWidth={1} />
-                <h4 className="font-serif text-3xl text-[#0B2F2A]">Dress Code</h4>
-                <p className="text-[#C2A378] tracking-[0.3em] uppercase text-[11px] font-bold">Formal / Elegante</p>
-                <p className="text-gray-400 font-serif italic">Nos encantaría verte con tus mejores galas (Vestido largo y Traje completo).</p>
-              </div>
-              <div className="text-center space-y-6">
-                <Mail className="mx-auto text-[#4E0302]" size={36} strokeWidth={1} />
-                <h4 className="font-serif text-3xl text-[#0B2F2A]">Obsequios</h4>
-                <p className="text-[#C2A378] tracking-[0.3em] uppercase text-[11px] font-bold">Lluvia de Sobres</p>
-                <p className="text-gray-400 font-serif italic">Tu presencia es nuestro mayor regalo, pero si deseas tener un detalle, contaremos con lluvia de sobres.</p>
-              </div>
-            </div>
+          {/* CÓDIGO DE VESTIMENTA */}
+          <section className="bg-[#0B2F2A] py-32 text-center text-white px-8">
+              <Shirt className="mx-auto text-[#C2A378] mb-8" size={32} strokeWidth={1} />
+              <h4 className="font-serif text-3xl mb-4 italic">Dress Code</h4>
+              <p className="text-[#C2A378] tracking-[0.3em] uppercase text-[10px] font-bold mb-4">Formal Elegante</p>
+              <p className="max-w-xs mx-auto text-white/60 text-sm font-serif italic">Hombres de traje completo, mujeres de vestido largo.</p>
           </section>
 
-          {/* RSVP FINAL */}
-          <footer className="py-40 text-center bg-white relative">
+          {/* RSVP */}
+          <footer className="py-40 text-center bg-white">
              <div className="max-w-2xl mx-auto space-y-12 px-8">
-               <div className="space-y-4">
-                 <h3 className="font-serif text-6xl text-[#0B2F2A]">RSVP</h3>
-                 <div className="h-[1px] w-24 bg-[#C2A378] mx-auto" />
-                 <p className="text-gray-400 font-serif italic text-lg">Por favor confirma tu asistencia antes del 01 de Diciembre</p>
-               </div>
-               
-               <a href="https://wa.me/50600000000" className="inline-block px-16 py-8 bg-[#0B2F2A] text-white text-[12px] tracking-[0.5em] uppercase font-bold rounded-full shadow-2xl hover:bg-[#C2A378] hover:text-[#0B2F2A] transition-all transform hover:scale-105">
-                  Confirmar Asistencia
+               <h3 className="font-serif text-5xl text-[#0B2F2A]">Confirmar Asistencia</h3>
+               <p className="text-gray-400 font-serif italic">Será un honor contar con tu presencia.</p>
+               <a href="https://wa.me/50600000000" className="inline-block px-12 py-6 bg-[#0B2F2A] text-white text-[11px] tracking-[0.5em] uppercase font-bold rounded-full shadow-xl hover:bg-[#C2A378] hover:text-[#0B2F2A] transition-all">
+                  Confirmar RSVP
                </a>
-               
-               <div className="pt-24 opacity-30">
-                 <p className="text-[11px] tracking-[0.6em] uppercase text-[#0B2F2A]">Carlos & Joseline • 2026</p>
-               </div>
              </div>
           </footer>
 
