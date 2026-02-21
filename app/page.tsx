@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Calendar, MapPin, Clock, Heart, ChevronDown, Mail, Music, Shirt, Camera, Share2 } from 'lucide-react';
 
-// --- COMPONENTE DEL CONTADOR (Diseño Circular) ---
+// --- COMPONENTE DEL CONTADOR ---
 const Contador = () => {
   const [tiempo, setTiempo] = useState({ dias: 0, hs: 0, min: 0, seg: 0 });
 
@@ -26,7 +26,6 @@ const Contador = () => {
 
   return (
     <div className="relative p-10 mt-8">
-      {/* Círculo decorativo similar a la imagen */}
       <div className="absolute inset-0 border border-[#C2A378]/40 rounded-full scale-110 animate-[spin_20s_linear_infinite]" />
       <div className="absolute inset-0 border border-[#4E0302]/20 rounded-full scale-105" />
       
@@ -46,28 +45,29 @@ const Contador = () => {
   );
 };
 
-useEffect(() => {
-  const manejarVisibilidad = () => {
-    if (document.hidden) {
-      audioRef.current?.pause();
-    } else {
-      // Solo reanuda si la invitación ya fue "abierta"
-      if (comenzar) {
-        audioRef.current?.play().catch(() => {});
-      }
-    }
-  };
-
-  document.addEventListener("visibilitychange", manejarVisibilidad);
-  return () => document.removeEventListener("visibilitychange", manejarVisibilidad);
-}, [comenzar]);
-
 export default function InvitacionBoda() {
   const [comenzar, setComenzar] = useState(false);
   const [cancion, setCancion] = useState("");
   const audioRef = useRef<HTMLAudioElement>(null);
   const { scrollYProgress } = useScroll();
   const yFlowers = useTransform(scrollYProgress, [0, 1], [0, -400]);
+
+  // --- SOLUCIÓN AL AUDIO: Pausar al salir del navegador ---
+  useEffect(() => {
+    const manejarVisibilidad = () => {
+      if (document.hidden) {
+        audioRef.current?.pause();
+      } else {
+        // Solo vuelve a sonar si el usuario ya presionó "Ingresar"
+        if (comenzar) {
+          audioRef.current?.play().catch(() => {});
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", manejarVisibilidad);
+    return () => document.removeEventListener("visibilitychange", manejarVisibilidad);
+  }, [comenzar]);
 
   const abrirInvitacion = () => {
     setComenzar(true);
@@ -81,6 +81,7 @@ export default function InvitacionBoda() {
 
   const sugerirMusica = () => {
     const mensaje = encodeURIComponent(`¡Hola! Sugiero esta canción para la boda: ${cancion}`);
+    // REEMPLAZA EL 50600000000 CON TU NÚMERO REAL ABAJO
     window.open(`https://wa.me/50600000000?text=${mensaje}`, '_blank');
   };
 
@@ -95,7 +96,6 @@ export default function InvitacionBoda() {
     <main className="min-h-screen bg-[#FDFCF9] text-[#2D2D2D] overflow-x-hidden relative selection:bg-[#0B2F2A] selection:text-white font-sans">
       <audio ref={audioRef} src="/music.mp3" loop preload="auto" />
       
-      {/* TEXTURA GLOBAL */}
       <div className="fixed inset-0 pointer-events-none z-[999] opacity-[0.04] mix-blend-multiply" 
            style={{ backgroundImage: `url('https://www.transparenttextures.com/patterns/natural-paper.png')` }} />
 
@@ -121,9 +121,7 @@ export default function InvitacionBoda() {
       {comenzar && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
           
-          {/* HERO CON FORMA ORGÁNICA */}
           <section className="min-h-screen relative flex flex-col items-center justify-center overflow-hidden px-6 pt-20">
-            {/* Decoración de fondo (Círculos suaves) */}
             <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#C2A378]/5 rounded-full blur-3xl" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#4E0302]/5 rounded-full blur-3xl" />
 
@@ -158,7 +156,6 @@ export default function InvitacionBoda() {
             </motion.div>
           </section>
 
-          {/* FRASE CON CURVA */}
           <section className="py-32 relative">
              <div className="absolute inset-0 bg-[#0B2F2A] skew-y-3 origin-right scale-110" />
              <div className="max-w-2xl mx-auto space-y-8 relative z-10 text-center px-8">
@@ -169,7 +166,6 @@ export default function InvitacionBoda() {
              </div>
           </section>
 
-          {/* LOGÍSTICA (TARJETAS REDONDEADAS) */}
           <section className="max-w-6xl mx-auto px-8 py-40 grid md:grid-cols-2 gap-8">
              <motion.div 
                 whileInView={{ opacity: 1, x: 0 }} initial={{ opacity: 0, x: -20 }}
@@ -203,14 +199,13 @@ export default function InvitacionBoda() {
              </motion.div>
           </section>
 
-          {/* DRESSCODE (DISEÑO BOHO) */}
           <section className="bg-[#F7F3ED]/50 py-32 px-8">
             <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-12 items-center">
               <div className="flex-1 text-center md:text-right space-y-4">
                 <Shirt className="inline-block text-[#4E0302]" size={40} />
                 <h4 className="font-serif text-4xl text-[#0B2F2A]">Vestimenta</h4>
                 <p className="text-[#C2A378] font-bold tracking-[0.3em] uppercase text-[10px]">Formal / Elegante</p>
-                <p className="text-gray-500 text-sm italic italic">Hombres de traje, mujeres de vestido largo.</p>
+                <p className="text-gray-500 text-sm italic">Hombres de traje, mujeres de vestido largo.</p>
               </div>
               <div className="w-[1px] h-32 bg-[#C2A378]/30 hidden md:block" />
               <div className="flex-1 text-center md:text-left space-y-4">
@@ -224,7 +219,6 @@ export default function InvitacionBoda() {
             </div>
           </section>
 
-          {/* GALERÍA CON BORDES REDONDEADOS */}
           <section className="py-32 px-4 max-w-5xl mx-auto text-center">
             <h3 className="font-serif text-4xl text-[#0B2F2A] mb-16">Nuestra Historia</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -240,7 +234,6 @@ export default function InvitacionBoda() {
             </div>
           </section>
 
-          {/* MÚSICA (FORMAS CIRCULARES) */}
           <section className="py-32 bg-[#0B2F2A] relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#C2A378]/10 rounded-full -mr-32 -mt-32" />
             <div className="max-w-xl mx-auto text-center relative z-10 px-8">
@@ -259,7 +252,6 @@ export default function InvitacionBoda() {
             </div>
           </section>
 
-          {/* CONFIRMACIÓN (DISEÑO FINAL) */}
           <footer className="py-40 text-center px-8 relative">
              <div className="mb-8">
                <div className="w-20 h-[1px] bg-[#C2A378] mx-auto mb-4" />
@@ -267,6 +259,7 @@ export default function InvitacionBoda() {
                <div className="w-20 h-[1px] bg-[#C2A378] mx-auto mt-4" />
              </div>
              <p className="text-gray-400 italic mb-12 max-w-xs mx-auto">Por favor, confirma tu asistencia antes del 01 de Diciembre.</p>
+             {/* REEMPLAZA EL 50600000000 CON TU NÚMERO REAL ABAJO */}
              <a href="https://wa.me/50600000000" className="inline-block px-12 py-6 bg-[#4E0302] text-white text-[11px] tracking-[0.4em] uppercase font-bold rounded-[50px_5px_50px_5px] shadow-2xl hover:bg-[#0B2F2A] transition-all">
                 Confirmar RSVP
              </a>
