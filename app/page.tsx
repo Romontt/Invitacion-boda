@@ -7,6 +7,7 @@ import {
   Camera, Star, Share2, Users, Lock, Settings, Link 
 } from 'lucide-react';
 
+
 // --- COMPONENTE DEL CONTADOR ESTILIZADO ---
 const Contador = () => {
   const [tiempo, setTiempo] = useState({ dias: 0, hs: 0, min: 0, seg: 0 });
